@@ -23,8 +23,10 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var arrayAdverts = []; // Пустой массив который будет заполняться объектами
 var object = {}; // Пустой объект который будет заполняться свойствами
 
+// Для создания и отрисовки
 var map = document.querySelector('.map');
 var mapPins = map.querySelector('.map__pins');
+var mapFiltersContainer = map.querySelector('.map__filters-container');
 var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
 var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
@@ -50,7 +52,7 @@ var getRoute = function (fileRoute, fileExtension, userIndex) {
 
   userIndex.splice(routeIndex, 1); // Вырезаем индекс, который уже был использован
 
-  return fileRoute + route + fileExtension;
+  return fileRoute + '0' + route + fileExtension;
 };
 
 // Получаем рандомное название, которое не повторяется
@@ -99,6 +101,10 @@ var generateAdvert = function (totalAdvert) {
       'description': '',
       'photos': getRandomSortElements(PHOTOS)
     };
+    object.location = {
+      'x': getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX),
+      'y': getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX)
+    };
     // Пушим в массив
     arrayAdverts.push(object);
   }
@@ -108,3 +114,61 @@ var generateAdvert = function (totalAdvert) {
 // Вызываем массив объектов
 var adverts = generateAdvert(ADVERT_COUNT);
 
+var createAdvert = function (advertParametr) {
+  var advert = mapCardTemplate.cloneNode(true);
+  var featureHtml = '';
+  var photosHtml = '';
+
+  // В html документ добавляем список удобств с модификатором
+  for (var i = 0; i < advertParametr.offer.features.length; i++) {
+    featureHtml += '<li class="popup__feature popup__feature--' + advertParametr.offer.features[i] + '"></li>';
+  }
+
+  // В html добавляем адрес изображения жилища
+  for (var j = 0; j < advertParametr.offer.photos.length; j++) {
+    photosHtml += '<img src="' + advertParametr.offer.photos[j] + '" class="popup__photo" width="45" height="40" alt="Жилье">';
+  }
+
+  advert.querySelector('.popup__title').textContent = advertParametr.offer.title;
+  advert.querySelector('.popup__text--address').textContent = advertParametr.offer.address;
+  advert.querySelector('.popup__text--price').innerHTML = advertParametr.offer.price + '&#8381;/ночь';
+  advert.querySelector('.popup__type').textContent = TYPES[advertParametr.offer.type];
+  advert.querySelector('.popup__text--capacity').textContent = advertParametr.offer.rooms + ' комнаты для ' + advertParametr.offer.guests + ' гостей';
+  advert.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertParametr.offer.checkin + ', выезд до ' + advertParametr.offer.checkout;
+  advert.querySelector('.popup__features').innerHTML = featureHtml;
+  advert.querySelector('.popup__description').textContent = advertParametr.offer.description;
+  advert.querySelector('.popup__photos').innerHTML = photosHtml;
+  advert.querySelector('.popup__avatar').src = advertParametr.author.avatar;
+
+  return advert;
+};
+
+// Создаем пин
+var renderPin = function (pinData) {
+  var pin = mapPinTemplate.cloneNode(true);
+
+  pin.style.left = pinData.location.x - pin.offsetWidth / 2 + 'px';
+  pin.style.top = pinData.location.y - pin.offsetHeight + 'px';
+  pin.querySelector('img').src = pinData.author.avatar;
+  pin.querySelector('img').alt = pinData.offer.title;
+
+  return pin;
+};
+
+// Вставка DOM
+var showAdvert = function (parent, advert) {
+  if (parent.querySelector('.map__card')) {
+    parent.replaceChild(createAdvert(advert), parent.querySelector('.map__card'));
+  }
+
+  map.insertBefore(createAdvert(advert), mapFiltersContainer);
+};
+
+// Отрисовка
+var fragment = document.createDocumentFragment();
+for (var i = 0; i < adverts.length; i++) {
+  fragment.appendChild(renderPin(adverts[i]));
+}
+mapPins.appendChild(fragment);
+
+showAdvert(map, adverts[0]);
