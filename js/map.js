@@ -87,19 +87,17 @@ var generateAdvert = function (totalAdvert) {
       'avatar': getRoute(FILE_ROUTE, FILE_EXTENSION, USER_INDEX)
     };
     object.offer = {
-      'offer': {
-        'title': getTitle(TITLES),
-        'address': getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX) + ', ' + getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX),
-        'price': getRandomIndex(PRICE_MIN, PRICE_MAX),
-        'type': getRandomElement(TYPES),
-        'rooms': getRandomIndex(ROOM_MIN, ROOM_MAX),
-        'guests': getRandomIndex(GUEST_MIN, GUEST_MAX),
-        'checkin': getRandomElement(TIMES),
-        'checkout': getRandomElement(TIMES),
-        'features': getRandomLengthArray(FEATURES),
-        'description': '',
-        'photos': getRandomSortElements(PHOTOS)
-      }
+      'title': getTitle(TITLES),
+      'address': getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX) + ', ' + getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX),
+      'price': getRandomIndex(PRICE_MIN, PRICE_MAX),
+      'type': getRandomElement(TYPES),
+      'rooms': getRandomIndex(ROOM_MIN, ROOM_MAX),
+      'guests': getRandomIndex(GUEST_MIN, GUEST_MAX),
+      'checkin': getRandomElement(TIMES),
+      'checkout': getRandomElement(TIMES),
+      'features': getRandomLengthArray(FEATURES),
+      'description': '',
+      'photos': getRandomSortElements(PHOTOS)
     };
     // Пушим в массив
     arrayAdverts.push(object);
