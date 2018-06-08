@@ -21,7 +21,6 @@ var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var arrayAdverts = []; // Пустой массив который будет заполняться объектами
-var object = {}; // Пустой объект который будет заполняться свойствами
 
 // Для создания и отрисовки
 var map = document.querySelector('.map');
@@ -83,36 +82,44 @@ var getRandomSortElements = function (elements) {
 };
 
 // Создаем массив объектов
-var generateAdvert = function (totalAdvert) {
-  for (var i = 0; i < totalAdvert; i++) {
-    object.author = {
-      'avatar': getRoute(FILE_ROUTE, FILE_EXTENSION, USER_INDEX)
-    };
-    object.offer = {
-      'title': getTitle(TITLES),
-      'address': getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX) + ', ' + getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX),
-      'price': getRandomIndex(PRICE_MIN, PRICE_MAX),
-      'type': getRandomElement(TYPES),
-      'rooms': getRandomIndex(ROOM_MIN, ROOM_MAX),
-      'guests': getRandomIndex(GUEST_MIN, GUEST_MAX),
-      'checkin': getRandomElement(TIMES),
-      'checkout': getRandomElement(TIMES),
-      'features': getRandomLengthArray(FEATURES),
-      'description': '',
-      'photos': getRandomSortElements(PHOTOS)
-    };
-    object.location = {
-      'x': getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX),
-      'y': getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX)
-    };
-    // Пушим в массив
-    arrayAdverts.push(object);
+var generateAdvert = function () {
+  var addressX = getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX);
+  var addressY = getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX);
+
+  return {
+    author: {
+      avatar: getRoute(FILE_ROUTE, FILE_EXTENSION, USER_INDEX)
+    },
+    offer: {
+      title: getTitle(TITLES),
+      address: addressX + ', ' + addressY,
+      price: getRandomIndex(PRICE_MIN, PRICE_MAX),
+      type: getRandomElement(TYPES),
+      rooms: getRandomIndex(ROOM_MIN, ROOM_MAX),
+      guests: getRandomIndex(GUEST_MIN, GUEST_MAX),
+      checkin: getRandomElement(TIMES),
+      checkout: getRandomElement(TIMES),
+      features: getRandomLengthArray(FEATURES),
+      description: '',
+      photos: getRandomSortElements(PHOTOS)
+    },
+    location: {
+      x: addressX,
+      y: addressY
+    }
+  };
+};
+
+var fillArray = function (advertsLength) {
+  for (var i = 0; i < advertsLength; i++) {
+    arrayAdverts.push(generateAdvert(i));
   }
+
   return arrayAdverts;
 };
 
 // Вызываем массив объектов
-var adverts = generateAdvert(ADVERT_COUNT);
+var adverts = fillArray(ADVERT_COUNT);
 
 var createAdvert = function (advertParametr) {
   var advert = mapCardTemplate.cloneNode(true);
@@ -155,7 +162,7 @@ var renderPin = function (pinData) {
   return pin;
 };
 
-// Вставка DOM
+// Вставка DOM карточки
 var showAdvert = function (parent, advert) {
   if (parent.querySelector('.map__card')) {
     parent.replaceChild(createAdvert(advert), parent.querySelector('.map__card'));
