@@ -2,14 +2,11 @@
 
 // Объявление переменных
 var ADVERT_COUNT = 8;
-var FILE_ROUTE = 'img/avatars/user';
-var USER_INDEX = ['1', '2', '3', '4', '5', '6', '7', '8'];
-var FILE_EXTENSION = '.png';
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var ADRESS_X_MIN = 300;
-var ADRESS_X_MAX = 900;
-var ADRESS_Y_MIN = 130;
-var ADRESS_Y_MAX = 630;
+var ADDRESS_X_MIN = 300;
+var ADDRESS_X_MAX = 900;
+var ADDRESS_Y_MIN = 130;
+var ADDRESS_Y_MAX = 630;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 1000000;
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
@@ -44,16 +41,6 @@ var getRandomIndex = function (min, max) {
   return Math.round(Math.random() * (min - max) + max);
 };
 
-// Функция получения значения от 01.. для ссылки на аватар
-var getRoute = function (fileRoute, fileExtension, userIndex) {
-  var routeIndex = getRandomIndex(0, userIndex.length - 1);
-  var route = userIndex[routeIndex];
-
-  userIndex.splice(routeIndex, 1); // Вырезаем индекс, который уже был использован
-
-  return fileRoute + '0' + route + fileExtension;
-};
-
 // Получаем рандомное название, которое не повторяется
 var getTitle = function (words) {
   var index = getRandomIndex(0, words.length - 1);
@@ -82,13 +69,13 @@ var getRandomSortElements = function (elements) {
 };
 
 // Создаем массив объектов
-var generateAdvert = function () {
-  var addressX = getRandomIndex(ADRESS_X_MIN, ADRESS_X_MAX);
-  var addressY = getRandomIndex(ADRESS_Y_MIN, ADRESS_Y_MAX);
+var generateAdvert = function (generate) {
+  var addressX = getRandomIndex(ADDRESS_X_MIN, ADDRESS_X_MAX);
+  var addressY = getRandomIndex(ADDRESS_Y_MIN, ADDRESS_Y_MAX);
 
   return {
     author: {
-      avatar: getRoute(FILE_ROUTE, FILE_EXTENSION, USER_INDEX)
+      avatar: 'img/avatars/user0' + generate + '.png'
     },
     offer: {
       title: getTitle(TITLES),
@@ -112,7 +99,7 @@ var generateAdvert = function () {
 
 var fillArray = function (advertsLength) {
   for (var i = 0; i < advertsLength; i++) {
-    arrayAdverts.push(generateAdvert(i));
+    arrayAdverts.push(generateAdvert(i + 1));
   }
 
   return arrayAdverts;
