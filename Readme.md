@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Андрей Морозов](https://up.htmlacademy.ru/javascript/14/user/608825).
-* Наставник: [Дмитрий Донецкий](https://up.htmlacademy.ru/javascript/14/user/497669).
+* Наставник: [Артемий Бойков](https://up.htmlacademy.ru/javascript/14/user/607755).
 
 ---
 
