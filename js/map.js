@@ -26,7 +26,9 @@ var mapFiltersContainer = map.querySelector('.map__filters-container');
 var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
 var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
 
-map.classList.remove('map--faded');
+var addressPointer = map.querySelector('.map__pin--main');
+var adForm = document.querySelector('.ad-form');
+var adFieldsets = adForm.querySelectorAll('.ad-form__element');
 
 // Объявление функций для работы
 
@@ -163,6 +165,27 @@ var fragment = document.createDocumentFragment();
 for (var i = 0; i < adverts.length; i++) {
   fragment.appendChild(renderPin(adverts[i]));
 }
-mapPins.appendChild(fragment);
+// mapPins.appendChild(fragment);
 
-showAdvert(map, adverts[0]);
+// showAdvert(map, adverts[0]);
+
+var pointerFirstClickHandler = function () {
+  map.classList.remove('map--faded');
+
+  // Активация формы
+  adForm.classList.remove('ad-form--disabled');
+  adFieldsets.forEach(function (item) { // Наткнулся в учебнике на данный метод, решил опробовать
+    item.disabled = false;
+  });
+
+  // Отрисовываем маркеры на карте
+  mapPins.appendChild(fragment);
+
+  // Удаляем обработчик
+  addressPointer.removeEventListener('mouseup', pointerFirstClickHandler);
+};
+
+var pageInit = function () {
+  addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
+};
+pageInit();
