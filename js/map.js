@@ -19,7 +19,7 @@ var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditio
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 
 var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
+// var ENTER_KEYCODE = 13;
 
 var arrayAdverts = []; // Пустой массив который будет заполняться объектами
 
