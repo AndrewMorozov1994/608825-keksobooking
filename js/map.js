@@ -17,6 +17,10 @@ var GUEST_MAX = 5;
 var TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
+
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
 var arrayAdverts = []; // Пустой массив который будет заполняться объектами
 
 // Для создания и отрисовки
@@ -29,6 +33,7 @@ var mapPinTemplate = document.querySelector('template').content.querySelector('.
 var addressPointer = map.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFieldsets = adForm.querySelectorAll('.ad-form__element');
+var adressInput = adForm.querySelector('#address');
 
 // Объявление функций для работы
 
@@ -136,12 +141,22 @@ var createAdvert = function (advertParametr) {
   advert.querySelector('.popup__photos').innerHTML = photosHtml;
   advert.querySelector('.popup__avatar').src = advertParametr.author.avatar;
 
+  // Закрытие карточки
+  var popupClose = advert.querySelector('.popup__close');
+  popupClose.addEventListener('click', closeAdvert);
+  document.addEventListener('keydown', escPressHandler);
+
   return advert;
 };
 
 // Создаем пин
-var renderPin = function (pinData) {
+var renderPin = function (pinData, index) {
   var pin = mapPinTemplate.cloneNode(true);
+
+  // Отрисовка карточки при нажатии на пин
+  pin.addEventListener('click', function () {
+    showAdvert(map, adverts[index]);
+  });
 
   pin.style.left = pinData.location.x - pin.offsetWidth / 2 + 'px';
   pin.style.top = pinData.location.y - pin.offsetHeight + 'px';
@@ -151,24 +166,55 @@ var renderPin = function (pinData) {
   return pin;
 };
 
+// Получаем координаты ползунка
+var getCoordinations = function () {
+  var left = addressPointer.offsetLeft - Math.round(addressPointer.offsetWidth / 2);
+  var top = addressPointer.offsetTop;
+
+  adressInput.value = left + ', ' + top;
+};
+
 // Вставка DOM карточки
 var showAdvert = function (parent, advert) {
+  var mapCard = parent.querySelector('.map__card');
   if (parent.querySelector('.map__card')) {
     parent.replaceChild(createAdvert(advert), parent.querySelector('.map__card'));
+  }
+  if (mapCard) {
+    closeAdvert();
   }
 
   map.insertBefore(createAdvert(advert), mapFiltersContainer);
 };
 
 // Отрисовка
-var fragment = document.createDocumentFragment();
-for (var i = 0; i < adverts.length; i++) {
-  fragment.appendChild(renderPin(adverts[i]));
-}
-// mapPins.appendChild(fragment);
+var renderAllPin = function (elements) {
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < elements.length; i++) {
+    fragment.appendChild(renderPin(elements[i], i));
+  }
+  mapPins.appendChild(fragment);
+};
 
-// showAdvert(map, adverts[0]);
+// Закрытие при нажатии на Escape
+var escPressHandler = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeAdvert();
+  }
+};
 
+// Функция закрытия карточки
+var closeAdvert = function () {
+  var popup = map.querySelector('.map__card');
+  var popupClose = popup.querySelector('.popup__close');
+
+  map.removeChild(popup);
+  document.removeEventListener('keydown', escPressHandler);
+  popupClose.removeEventListener('click', closeAdvert);
+  popupClose.removeEventListener('keydown', closeAdvert);
+};
+
+// Функция изменения состояния при первом нажатии
 var pointerFirstClickHandler = function () {
   map.classList.remove('map--faded');
 
@@ -179,13 +225,18 @@ var pointerFirstClickHandler = function () {
   });
 
   // Отрисовываем маркеры на карте
-  mapPins.appendChild(fragment);
+  renderAllPin(adverts);
+
+  // Передаем координаты в форму
+  getCoordinations();
 
   // Удаляем обработчик
   addressPointer.removeEventListener('mouseup', pointerFirstClickHandler);
 };
 
+// Инициализация первого нажатия
 var pageInit = function () {
   addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
+  addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 };
 pageInit();
