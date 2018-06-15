@@ -188,7 +188,7 @@ var showAdvert = function (parent, advert) {
 };
 
 // Отрисовка
-var renderAllPin = function (elements) {
+var renderAllPins = function (elements) {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < elements.length; i++) {
     fragment.appendChild(renderPin(elements[i], i));
@@ -225,7 +225,7 @@ var pointerFirstClickHandler = function () {
   });
 
   // Отрисовываем маркеры на карте
-  renderAllPin(adverts);
+  renderAllPins(adverts);
 
   // Передаем координаты в форму
   getCoordinations();
@@ -235,8 +235,8 @@ var pointerFirstClickHandler = function () {
 };
 
 // Инициализация первого нажатия
-var pageInit = function () {
+var initPage = function () {
   addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
   addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 };
-pageInit();
+initPage();
