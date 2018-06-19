@@ -10,22 +10,10 @@ var ADDRESS_Y_MAX = 630;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 1000000;
 var TYPES = {
-  flat: {
-    minPrice: 1000,
-    typeTitle: 'Квартира'
-  },
-  bungalo: {
-    minPrice: 0,
-    typeTitle: 'Бунгало'
-  },
-  house: {
-    minPrice: 5000,
-    typeTitle: 'Дом'
-  },
-  palace: {
-    minPrice: 10000,
-    typeTitle: 'Дворец'
-  }
+  flat: 1000,
+  bungalo: 0,
+  house: 5000,
+  palace: 10000
 };
 
 var ROOM_MIN = 1;
@@ -258,7 +246,7 @@ var pointerFirstClickHandler = function () {
   // Передаем координаты в форму
   getCoordinations();
 
-
+  setPrice();
 };
 
 // Инициализация первого нажатия
@@ -288,6 +276,14 @@ titleAd.addEventListener('change', function (evt) {
   evt.target.checkValidity();
 });
 
+// Минимальная цена в зависимости от типа жилья
+var setPrice = function () {
+  price.min = TYPES[homesType.value];
+  price.placeholder = TYPES[homesType.value];
+};
+
+homesType.addEventListener('change', setPrice);
+
 // Валидация цены
 var setPriceInvalid = function () {
   if (price.validity.rangeUnderflow) {
@@ -304,12 +300,6 @@ var setPriceInvalid = function () {
 price.addEventListener('invalid', setPriceInvalid);
 price.addEventListener('change', function (evt) {
   evt.target.checkValidity();
-});
-
-// Минимальная цена в зависимости от типа жилья
-homesType.addEventListener('change', function () {
-  price.min = TYPES[homesType.value].minPrice;
-  price.placeholder = TYPES[homesType.value].minPrice;
 });
 
 // Синхронизация времени въезда и выезда
