@@ -341,17 +341,16 @@ var resetClickHandler = function () {
 
   map.classList.add('map--faded');
   adForm.classList.add('ad-form--disabled');
-  closeAdvert();
 
   var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
-  for (var k = 0; k < pins.length; k++) {
-    mapPins.removeChild(pins[k]);
+  for (var j = 0; j < pins.length; j++) {
+    mapPins.removeChild(pins[j]);
   }
-
   addressPointer.style.left = ADDRESS_POINTER_X;
   addressPointer.style.top = ADDRESS_POINTER_Y;
 
   getCoordinations();
+  closeAdvert();
 };
 
 resetButton.addEventListener('click', resetClickHandler);
