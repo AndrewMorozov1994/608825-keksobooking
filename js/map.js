@@ -9,7 +9,13 @@ var ADDRESS_Y_MIN = 130;
 var ADDRESS_Y_MAX = 630;
 var PRICE_MIN = 1000;
 var PRICE_MAX = 1000000;
-var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var TYPES = {
+  flat: 1000,
+  bungalo: 0,
+  house: 5000,
+  palace: 10000
+};
+
 var ROOM_MIN = 1;
 var ROOM_MAX = 5;
 var GUEST_MIN = 1;
@@ -34,6 +40,16 @@ var addressPointer = map.querySelector('.map__pin--main');
 var adForm = document.querySelector('.ad-form');
 var adFieldsets = adForm.querySelectorAll('.ad-form__element');
 var adressInput = adForm.querySelector('#address');
+
+// Находим Инпуты в форме
+var titleAd = adForm.querySelector('#title');
+var homesType = adForm.querySelector('#type');
+var price = adForm.querySelector('#price');
+var timeIn = adForm.querySelector('#timein');
+var timeOut = adForm.querySelector('#timeout');
+var roomNumber = adForm.querySelector('#room_number');
+var capacity = adForm.querySelector('#capacity');
+var resetButton = adForm.querySelector('.ad-form__reset');
 
 // Объявление функций для работы
 
@@ -230,8 +246,7 @@ var pointerFirstClickHandler = function () {
   // Передаем координаты в форму
   getCoordinations();
 
-  // Удаляем обработчик
-  addressPointer.removeEventListener('mouseup', pointerFirstClickHandler);
+  setPrice();
 };
 
 // Инициализация первого нажатия
@@ -240,3 +255,96 @@ var initPage = function () {
   addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 };
 initPage();
+
+// ВАЛИДАЦИЯ
+
+// Валидация заголовка
+var setTitleInvalid = function () {
+  if (titleAd.validity.tooShort) {
+    titleAd.setCustomValidity('Минимальное число символов: ' + titleAd.minLength);
+  } else if (titleAd.validity.tooLong) {
+    titleAd.setCustomValidity('Максимальное число символов: ' + titleAd.maxLength);
+  } else if (titleAd.validity.valueMissing) {
+    titleAd.setCustomValidity('Обязательное поле');
+  } else {
+    titleAd.setCustomValidity('');
+  }
+};
+
+titleAd.addEventListener('invalid', setTitleInvalid);
+titleAd.addEventListener('change', function (evt) {
+  evt.target.checkValidity();
+});
+
+// Минимальная цена в зависимости от типа жилья
+var setPrice = function () {
+  price.min = TYPES[homesType.value];
+  price.placeholder = TYPES[homesType.value];
+};
+
+homesType.addEventListener('change', setPrice);
+
+// Валидация цены
+var setPriceInvalid = function () {
+  if (price.validity.rangeUnderflow) {
+    price.setCustomValidity('Минимальная цена: ' + price.min);
+  } else if (price.validity.rangeOverflow) {
+    price.setCustomValidity('Максимальная цена: ' + price.max);
+  } else if (price.validity.valueMissing) {
+    price.setCustomValidity('Обязательное поле');
+  } else {
+    price.setCustomValidity('');
+  }
+};
+
+price.addEventListener('invalid', setPriceInvalid);
+price.addEventListener('change', function (evt) {
+  evt.target.checkValidity();
+});
+
+// Синхронизация времени въезда и выезда
+timeIn.addEventListener('change', function () {
+  timeOut.value = timeIn.value;
+});
+
+timeOut.addEventListener('change', function () {
+  timeIn.value = timeOut.value;
+});
+
+// Синхронизация количества гостей и количества комнат
+roomNumber.addEventListener('change', function () {
+  if (+roomNumber.value < roomNumber.length) {
+    capacity.value = roomNumber.value;
+  } else {
+    capacity.value = 0;
+  }
+
+  for (var i = 0; i < capacity.length; i++) {
+    var option = capacity.options[i];
+    var notForGuests = +option.value === 0;
+
+    if (+roomNumber.value === 100) {
+      option.disabled = !notForGuests;
+    } else {
+      option.disabled = notForGuests || +option.value > +roomNumber.value;
+    }
+  }
+});
+
+// Кнопка сброса
+var resetClickHandler = function () {
+  adForm.reset();
+
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  closeAdvert();
+
+  var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+  for (var k = 0; k < pins.length; k++) {
+    mapPins.removeChild(pins[k]);
+  }
+
+  getCoordinations();
+};
+
+resetButton.addEventListener('click', resetClickHandler);
