@@ -28,8 +28,8 @@ var ESC_KEYCODE = 27;
 // var ENTER_KEYCODE = 13;
 
 // Исходные координаты ползунка
-var ADDRESS_POINTER_X = '537px';
-var ADDRESS_POINTER_Y = '375px';
+var INITIAL_ADDRESS_X = 537;
+var INITIAL_ADDRESS_Y = 375;
 
 var arrayAdverts = []; // Пустой массив который будет заполняться объектами
 
@@ -346,8 +346,8 @@ var resetClickHandler = function () {
   for (var j = 0; j < pins.length; j++) {
     mapPins.removeChild(pins[j]);
   }
-  addressPointer.style.left = ADDRESS_POINTER_X;
-  addressPointer.style.top = ADDRESS_POINTER_Y;
+  addressPointer.style.left = INITIAL_ADDRESS_X + 'px';
+  addressPointer.style.top = INITIAL_ADDRESS_Y + 'px';
 
   getCoordinations();
   closeAdvert();
