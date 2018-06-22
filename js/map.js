@@ -27,6 +27,10 @@ var PHOTOS = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.g
 var ESC_KEYCODE = 27;
 // var ENTER_KEYCODE = 13;
 
+// Исходные координаты ползунка
+var INITIAL_ADDRESS_X = 537;
+var INITIAL_ADDRESS_Y = 375;
+
 var arrayAdverts = []; // Пустой массив который будет заполняться объектами
 
 // Для создания и отрисовки
@@ -337,14 +341,76 @@ var resetClickHandler = function () {
 
   map.classList.add('map--faded');
   adForm.classList.add('ad-form--disabled');
-  closeAdvert();
 
   var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
-  for (var k = 0; k < pins.length; k++) {
-    mapPins.removeChild(pins[k]);
+  for (var j = 0; j < pins.length; j++) {
+    mapPins.removeChild(pins[j]);
   }
+  addressPointer.style.left = INITIAL_ADDRESS_X + 'px';
+  addressPointer.style.top = INITIAL_ADDRESS_Y + 'px';
 
   getCoordinations();
+  closeAdvert();
 };
 
 resetButton.addEventListener('click', resetClickHandler);
+
+// Перемещение
+addressPointer.addEventListener('mousedown', function (evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: moveEvt.clientX - startCoords.x,
+      y: moveEvt.clientY - startCoords.y
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    var newX = addressPointer.offsetLeft + shift.x;
+    var newY = addressPointer.offsetTop + shift.y;
+
+    if (newX < 0) {
+      newX = 0;
+    }
+
+    if (newX > addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth) {
+      newX = addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth;
+    }
+
+    if (newY < ADDRESS_Y_MIN) {
+      newY = ADDRESS_Y_MIN;
+    }
+    if (newY > ADDRESS_Y_MAX) {
+      newY = ADDRESS_Y_MAX;
+    }
+
+    addressPointer.style.left = newX + 'px';
+    addressPointer.style.top = newY + 'px';
+
+    var locationX = newX + Math.round(addressPointer.offsetWidth / 2);
+    var locationY = newY + addressPointer.offsetHeight;
+
+    adressInput.value = locationX + ', ' + locationY;
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
