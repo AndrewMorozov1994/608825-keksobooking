@@ -17,7 +17,7 @@
     });
 
     // Отрисовываем маркеры на карте
-    window.pin.renderAllPins(window.data.adverts);
+    window.backend.download(window.pin.renderAllPins, window.backend.error);
 
     // Передаем координаты в форму
     window.form.getCoordinations();

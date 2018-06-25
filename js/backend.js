@@ -13,7 +13,7 @@
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
-        onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
+        onError('Ошибка: ' + xhr.status + ' ' + xhr.statusText);
       }
     });
 
@@ -28,5 +28,43 @@
     xhr.timeout = timeout;
 
     return xhr;
+  };
+
+  var upload = function (data, onLoad, onError) {
+    var xhr = setup(onLoad, onError);
+    xhr.open('POST', URL_UPLOAD);
+    xhr.send(data);
+  };
+
+  var download = function (onLoad, onError) {
+    var xhr = setup(onLoad, onError);
+
+    xhr.open('GET', URL_DOWNLOAD);
+    xhr.send();
+  };
+
+  var error = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; background-color: red; color: white';
+    node.style.display = 'flex';
+    node.style.justifyContent = 'center';
+    node.style.alignItems = 'center';
+    node.style.position = 'fixed';
+    node.style.width = '400px';
+    node.style.minHeight = '200px';
+    node.style.border = '3px solid black';
+    node.style.borderRadius = '10px';
+    node.style.left = 'calc(50% - 200px)';
+    node.style.top = 'calc(50% - 100px)';
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend = {
+    upload: upload,
+    download: download,
+    error: error
   };
 })();

@@ -41,8 +41,8 @@
 
   // Минимальная цена в зависимости от типа жилья
   var setPrice = function () {
-    price.min = window.data.TYPES[homesType.value];
-    price.placeholder = window.data.TYPES[homesType.value];
+    price.min = window.card.TYPES[homesType.value];
+    price.placeholder = window.card.TYPES[homesType.value];
   };
 
   homesType.addEventListener('change', setPrice);
@@ -126,5 +126,15 @@
     getCoordinations: getCoordinations,
     setPrice: setPrice
   };
+
+  // Отправка формы
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(adForm), function () {
+      adForm.reset();
+      setPrice();
+      getCoordinations();
+    }, window.backend.error);
+    evt.preventDefault();
+  });
 })();
 
