@@ -5,6 +5,7 @@
   var INITIAL_ADDRESS_X = 537;
   var INITIAL_ADDRESS_Y = 375;
 
+
   var map = document.querySelector('.map');
   var addressPointer = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
@@ -20,6 +21,7 @@
   var capacity = adForm.querySelector('#capacity');
   var adressInput = adForm.querySelector('#address');
   var resetButton = adForm.querySelector('.ad-form__reset');
+
 
   // Валидация заголовка
   var setTitleInvalid = function () {
@@ -118,17 +120,19 @@
 
     getCoordinations();
     window.card.closeAdvert();
+    setPrice();
   };
 
   resetButton.addEventListener('click', resetClickHandler);
 
   // Отправка формы
-  adForm.addEventListener('submit', function () {
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
 
     window.backend.upload(new FormData(adForm), function () {
-      adForm.reset();
-      setPrice();
-      getCoordinations();
+      resetClickHandler();
+
+
     }, window.backend.error);
 
   });

@@ -1,9 +1,11 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
   var URL_DOWNLOAD = 'https://js.dump.academy/keksobooking/data';
   var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
   var timeout = 30000;
+  var successSendForm = document.querySelector('.success');
 
   var setup = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
@@ -34,6 +36,24 @@
     var xhr = setup(onLoad, onError);
     xhr.open('POST', URL_UPLOAD);
     xhr.send(data);
+    successSendForm.classList.remove('hidden');
+    closeSuccess();
+
+    document.addEventListener('keydown', closeSuccessEsc);
+  };
+
+  var closeSuccess = function () {
+    document.addEventListener('click', function () {
+      successSendForm.classList.add('hidden');
+    });
+    document.removeEventListener('click', closeSuccess);
+  };
+
+  var closeSuccessEsc = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      successSendForm.classList.add('hidden');
+    }
+    document.removeEventListener('keydown', closeSuccessEsc);
   };
 
   var download = function (onLoad, onError) {
@@ -45,7 +65,7 @@
 
   var error = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; background-color: red; color: white';
+    node.style = 'z-index: 300; margin: 0 auto; background-color: red; color: white';
     node.style.display = 'flex';
     node.style.justifyContent = 'center';
     node.style.alignItems = 'center';
@@ -60,6 +80,16 @@
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        document.body.removeChild(node);
+      }
+    });
+
+    document.addEventListener('click', function () {
+      document.body.removeChild(node);
+    });
   };
 
   window.backend = {
