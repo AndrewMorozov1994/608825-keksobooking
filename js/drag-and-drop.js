@@ -13,6 +13,8 @@
   addressPointer.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
+    addressPointer.style.zIndex = '200';
+
     var startCoords = {
       x: evt.clientX,
       y: evt.clientY

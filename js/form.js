@@ -122,19 +122,20 @@
 
   resetButton.addEventListener('click', resetClickHandler);
 
-  window.form = {
-    getCoordinations: getCoordinations,
-    setPrice: setPrice
-  };
-
   // Отправка формы
-  adForm.addEventListener('submit', function (evt) {
+  adForm.addEventListener('submit', function () {
+
     window.backend.upload(new FormData(adForm), function () {
       adForm.reset();
       setPrice();
       getCoordinations();
     }, window.backend.error);
-    evt.preventDefault();
+
   });
+
+  window.form = {
+    getCoordinations: getCoordinations,
+    setPrice: setPrice
+  };
 })();
 
