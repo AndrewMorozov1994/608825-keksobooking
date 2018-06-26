@@ -36,24 +36,6 @@
     var xhr = setup(onLoad, onError);
     xhr.open('POST', URL_UPLOAD);
     xhr.send(data);
-    successSendForm.classList.remove('hidden');
-    closeSuccess();
-
-    document.addEventListener('keydown', closeSuccessEsc);
-  };
-
-  var closeSuccess = function () {
-    document.addEventListener('click', function () {
-      successSendForm.classList.add('hidden');
-    });
-    document.removeEventListener('click', closeSuccess);
-  };
-
-  var closeSuccessEsc = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      successSendForm.classList.add('hidden');
-    }
-    document.removeEventListener('keydown', closeSuccessEsc);
   };
 
   var download = function (onLoad, onError) {
