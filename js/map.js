@@ -17,13 +17,15 @@
     });
 
     // Отрисовываем маркеры на карте
-    window.backend.download(window.pin.renderAllPins, window.backend.error);
+    window.backend.download(window.pins.renderAllPins, window.backend.error);
 
     // Передаем координаты в форму
     window.form.getCoordinations();
 
     // Устанавливаем соответствие цены в зависимости от типа жилья
     window.form.setPrice();
+
+    window.form.setRoomsToGuests();
   };
 
   // Инициализация первого нажатия

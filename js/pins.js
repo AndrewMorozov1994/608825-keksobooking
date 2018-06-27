@@ -31,7 +31,7 @@
     mapPins.appendChild(fragment);
   };
 
-  window.pin = {
+  window.pins = {
     renderAllPins: renderAllPins
   };
 })();

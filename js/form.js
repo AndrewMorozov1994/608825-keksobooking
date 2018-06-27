@@ -77,7 +77,7 @@
   });
 
   // Синхронизация количества гостей и количества комнат
-  roomNumber.addEventListener('change', function () {
+  var setRoomsToGuests = function () {
     if (+roomNumber.value < roomNumber.length) {
       capacity.value = roomNumber.value;
     } else {
@@ -94,7 +94,8 @@
         option.disabled = notForGuests || +option.value > +roomNumber.value;
       }
     }
-  });
+  };
+  roomNumber.addEventListener('change', setRoomsToGuests);
 
   // Получаем координаты ползунка
   var getCoordinations = function () {
@@ -129,6 +130,9 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
+    document.addEventListener('keydown', closeSuccessEsc);
+    document.addEventListener('click', closeSuccess);
+
     window.backend.upload(new FormData(adForm), function () {
       successSendForm.classList.remove('hidden');
 
@@ -146,14 +150,15 @@
 
   var closeSuccess = function () {
     successSendForm.classList.add('hidden');
+    document.removeEventListener('keydown', closeSuccessEsc);
+    document.removeEventListener('click', closeSuccess);
   };
 
-  document.addEventListener('keydown', closeSuccessEsc);
-  document.addEventListener('click', closeSuccess);
 
   window.form = {
     getCoordinations: getCoordinations,
-    setPrice: setPrice
+    setPrice: setPrice,
+    setRoomsToGuests: setRoomsToGuests
   };
 })();
 

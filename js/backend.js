@@ -5,7 +5,7 @@
   var URL_DOWNLOAD = 'https://js.dump.academy/keksobooking/data';
   var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
   var timeout = 30000;
-  var successSendForm = document.querySelector('.success');
+
 
   var setup = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
@@ -46,6 +46,7 @@
   };
 
   var error = function (errorMessage) {
+
     var node = document.createElement('div');
     node.style = 'z-index: 300; margin: 0 auto; background-color: red; color: white';
     node.style.display = 'flex';
@@ -63,15 +64,20 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
 
-    document.addEventListener('keydown', function (evt) {
+    var closeErrorEsc = function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
-        document.body.removeChild(node);
+        closeError();
       }
-    });
+    };
 
-    document.addEventListener('click', function () {
+    var closeError = function () {
       document.body.removeChild(node);
-    });
+      document.removeEventListener('keydown', closeErrorEsc);
+      document.removeEventListener('click', closeError);
+    };
+
+    document.addEventListener('keydown', closeErrorEsc);
+    document.addEventListener('click', closeError);
   };
 
   window.backend = {
