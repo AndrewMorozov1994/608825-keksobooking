@@ -4,6 +4,7 @@
   // Исходные координаты ползунка
   var INITIAL_ADDRESS_X = 537;
   var INITIAL_ADDRESS_Y = 375;
+  var ESC_KEYCODE = 27;
 
   var map = document.querySelector('.map');
   var addressPointer = map.querySelector('.map__pin--main');
@@ -20,6 +21,7 @@
   var capacity = adForm.querySelector('#capacity');
   var adressInput = adForm.querySelector('#address');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var successSendForm = document.querySelector('.success');
 
   // Валидация заголовка
   var setTitleInvalid = function () {
@@ -41,8 +43,8 @@
 
   // Минимальная цена в зависимости от типа жилья
   var setPrice = function () {
-    price.min = window.data.TYPES[homesType.value];
-    price.placeholder = window.data.TYPES[homesType.value];
+    price.min = window.card.TYPES[homesType.value].minPrice;
+    price.placeholder = window.card.TYPES[homesType.value].minPrice;
   };
 
   homesType.addEventListener('change', setPrice);
@@ -75,7 +77,7 @@
   });
 
   // Синхронизация количества гостей и количества комнат
-  roomNumber.addEventListener('change', function () {
+  var setRoomsToGuests = function () {
     if (+roomNumber.value < roomNumber.length) {
       capacity.value = roomNumber.value;
     } else {
@@ -92,7 +94,8 @@
         option.disabled = notForGuests || +option.value > +roomNumber.value;
       }
     }
-  });
+  };
+  roomNumber.addEventListener('change', setRoomsToGuests);
 
   // Получаем координаты ползунка
   var getCoordinations = function () {
@@ -118,13 +121,44 @@
 
     getCoordinations();
     window.card.closeAdvert();
+    setPrice();
   };
 
   resetButton.addEventListener('click', resetClickHandler);
 
+  // Отправка формы
+  adForm.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+
+    document.addEventListener('keydown', closeSuccessEsc);
+    document.addEventListener('click', closeSuccess);
+
+    window.backend.upload(new FormData(adForm), function () {
+      successSendForm.classList.remove('hidden');
+
+      resetClickHandler();
+
+    }, window.backend.error);
+
+  });
+
+  var closeSuccessEsc = function (evtClose) {
+    if (evtClose.keyCode === ESC_KEYCODE) {
+      closeSuccess();
+    }
+  };
+
+  var closeSuccess = function () {
+    successSendForm.classList.add('hidden');
+    document.removeEventListener('keydown', closeSuccessEsc);
+    document.removeEventListener('click', closeSuccess);
+  };
+
+
   window.form = {
     getCoordinations: getCoordinations,
-    setPrice: setPrice
+    setPrice: setPrice,
+    setRoomsToGuests: setRoomsToGuests
   };
 })();
 

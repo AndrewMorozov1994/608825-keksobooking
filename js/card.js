@@ -1,6 +1,24 @@
 'use strict';
 
 (function () {
+  var TYPES = {
+    flat: {
+      minPrice: 1000,
+      title: 'Квартира'
+    },
+    bungalo: {
+      minPrice: 0,
+      title: 'Бунгало'
+    },
+    house: {
+      minPrice: 5000,
+      title: 'Дом'
+    },
+    palace: {
+      minPrice: 10000,
+      title: 'Дворец'
+    }
+  };
   var ESC_KEYCODE = 27;
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
@@ -24,7 +42,7 @@
     advert.querySelector('.popup__title').textContent = advertParametr.offer.title;
     advert.querySelector('.popup__text--address').textContent = advertParametr.offer.address;
     advert.querySelector('.popup__text--price').innerHTML = advertParametr.offer.price + '&#8381;/ночь';
-    advert.querySelector('.popup__type').textContent = window.data.TYPES[advertParametr.offer.type];
+    advert.querySelector('.popup__type').textContent = TYPES[advertParametr.offer.type].title;
     advert.querySelector('.popup__text--capacity').textContent = advertParametr.offer.rooms + ' комнаты для ' + advertParametr.offer.guests + ' гостей';
     advert.querySelector('.popup__text--time').textContent = 'Заезд после ' + advertParametr.offer.checkin + ', выезд до ' + advertParametr.offer.checkout;
     advert.querySelector('.popup__features').innerHTML = featureHtml;
@@ -73,7 +91,8 @@
 
   window.card = {
     showAdvert: showAdvert,
-    closeAdvert: closeAdvert
+    closeAdvert: closeAdvert,
+    TYPES: TYPES
   };
 })();
 
