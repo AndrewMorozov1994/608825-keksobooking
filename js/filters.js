@@ -62,7 +62,7 @@
     window.pins.renderAllPins(filteredData);
   };
 
-  filterField.addEventListener('change', function () {
+  filterField.addEventListener('input', function () {
     window.calc.debounce(updatePins);
   });
 

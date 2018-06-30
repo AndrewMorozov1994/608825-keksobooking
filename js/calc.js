@@ -43,18 +43,12 @@
     return newSorted;
   };
 
-  var debounce = function (callback) {
-    var lastTimeout = null;
-
-    return function () {
-      var args = arguments;
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = window.setTimeout(function () {
-        callback.apply(null, args);
-      }, DEBOUNCE_INTERVAL);
-    };
+  var lastTimeout;
+  var debounce = function (fun) {
+    if (lastTimeout) {
+      window.clearTimeout(lastTimeout);
+    }
+    lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
   };
 
   window.calc = {
