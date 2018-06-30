@@ -74,6 +74,9 @@
   // Функция закрытия карточки
   var closeAdvert = function () {
     var popup = map.querySelector('.map__card');
+    if (!popup) {
+      return;
+    }
     var popupClose = popup.querySelector('.popup__close');
 
     map.removeChild(popup);

@@ -20,6 +20,7 @@
 
     window.filters.updatePins();
 
+
     // Передаем координаты в форму
     window.form.getCoordinations();
 
@@ -30,11 +31,10 @@
   };
 
   // Инициализация первого нажатия
-  var initPage = function () {
-    addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
-    addressPointer.addEventListener('keydown', pointerFirstClickHandler);
-  };
-  initPage();
+
+  addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
+  addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 
   window.backend.download(window.filters.downloadOffers, window.backend.error);
+
 })();
