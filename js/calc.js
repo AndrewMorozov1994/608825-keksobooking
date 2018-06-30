@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var DEBOUNCE_INTERVAL = 500;
+
   // Объявление функций для работы
 
   // Функция получения случайного элемента
@@ -41,12 +43,27 @@
     return newSorted;
   };
 
+  var debounce = function (callback) {
+    var lastTimeout = null;
+
+    return function () {
+      var args = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        callback.apply(null, args);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.calc = {
     getRandomIndex: getRandomIndex,
     getRandomElement: getRandomElement,
     getTitle: getTitle,
     getRandomLengthArray: getRandomLengthArray,
-    getRandomSortElements: getRandomSortElements
+    getRandomSortElements: getRandomSortElements,
+    debounce: debounce
   };
 })();
 

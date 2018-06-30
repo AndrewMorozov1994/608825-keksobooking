@@ -11,7 +11,7 @@
 
     // Отрисовка карточки при нажатии на пин
     pin.addEventListener('click', function () {
-      window.card.showAdvert(map, pinData);
+      window.advert.showAdvert(map, pinData);
     });
 
     pin.style.left = pinData.location.x - pin.offsetWidth / 2 + 'px';

@@ -43,8 +43,8 @@
 
   // Минимальная цена в зависимости от типа жилья
   var setPrice = function () {
-    price.min = window.card.TYPES[homesType.value].minPrice;
-    price.placeholder = window.card.TYPES[homesType.value].minPrice;
+    price.min = window.advert.TYPES[homesType.value].minPrice;
+    price.placeholder = window.advert.TYPES[homesType.value].minPrice;
   };
 
   homesType.addEventListener('change', setPrice);
@@ -120,7 +120,7 @@
     addressPointer.style.top = INITIAL_ADDRESS_Y + 'px';
 
     getCoordinations();
-    window.card.closeAdvert();
+    window.advert.closeAdvert();
     setPrice();
   };
 
