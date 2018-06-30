@@ -112,10 +112,7 @@
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
 
-    var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var j = 0; j < pins.length; j++) {
-      mapPins.removeChild(pins[j]);
-    }
+    window.pins.removePins();
     addressPointer.style.left = INITIAL_ADDRESS_X + 'px';
     addressPointer.style.top = INITIAL_ADDRESS_Y + 'px';
 

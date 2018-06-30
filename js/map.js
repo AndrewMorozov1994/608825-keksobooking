@@ -17,7 +17,8 @@
     });
 
     // Отрисовываем маркеры на карте
-    window.backend.download(window.pins.renderAllPins, window.backend.error);
+
+    window.filters.updatePins();
 
     // Передаем координаты в форму
     window.form.getCoordinations();
@@ -34,4 +35,6 @@
     addressPointer.addEventListener('keydown', pointerFirstClickHandler);
   };
   initPage();
+
+  window.backend.download(window.filters.downloadOffers, window.backend.error);
 })();

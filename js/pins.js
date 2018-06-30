@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var PIN_COUNT = 5;
+
   var map = document.querySelector('.map');
   var mapPins = map.querySelector('.map__pins');
   var mapPinTemplate = document.querySelector('template').content.querySelector('.map__pin');
@@ -24,14 +26,24 @@
 
   // Отрисовка
   var renderAllPins = function (elements) {
+    var elementsCount = elements.length > PIN_COUNT ? PIN_COUNT : elements.length;
+
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < elements.length; i++) {
+    for (var i = 0; i < elementsCount; i++) {
       fragment.appendChild(renderPin(elements[i]));
     }
     mapPins.appendChild(fragment);
   };
 
+  var removePins = function () {
+    var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var j = 0; j < pins.length; j++) {
+      mapPins.removeChild(pins[j]);
+    }
+  };
+
   window.pins = {
-    renderAllPins: renderAllPins
+    renderAllPins: renderAllPins,
+    removePins: removePins
   };
 })();
