@@ -32,5 +32,5 @@
   addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
   addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 
-  window.backend.download(window.filters.downloadOffers, window.backend.error);
+  window.backend.download(window.filters.loadOffers, window.backend.error);
 })();

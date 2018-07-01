@@ -66,12 +66,12 @@
     });
   });
 
-  var downloadOffers = function (data) {
+  var loadOffers = function (data) {
     pin = data.slice();
   };
 
   window.filters = {
     updatePins: updatePins,
-    downloadOffers: downloadOffers
+    loadOffers: loadOffers
   };
 })();
