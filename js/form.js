@@ -9,7 +9,7 @@
   var map = document.querySelector('.map');
   var addressPointer = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
-  var mapPins = map.querySelector('.map__pins');
+  var filterField = document.querySelector('.map__filters');
 
   // Находим Инпуты в форме
   var titleAd = adForm.querySelector('#title');
@@ -108,6 +108,7 @@
   // Кнопка сброса
   var resetClickHandler = function () {
     adForm.reset();
+    filterField.reset();
 
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
@@ -134,9 +135,7 @@
       successSendForm.classList.remove('hidden');
 
       resetClickHandler();
-
     }, window.backend.error);
-
   });
 
   var closeSuccessEsc = function (evtClose) {
@@ -151,11 +150,9 @@
     document.removeEventListener('click', closeSuccess);
   };
 
-
   window.form = {
     getCoordinations: getCoordinations,
     setPrice: setPrice,
     setRoomsToGuests: setRoomsToGuests
   };
 })();
-

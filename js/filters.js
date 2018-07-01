@@ -15,11 +15,9 @@
   var pin = [];
 
   var filterValue = function (inputField, property) {
-    if (inputField.value !== 'any') {
-      filteredData = filteredData.filter(function (item) {
-        return item.offer[property].toString() === inputField.value;
-      });
-    }
+    filteredData = filteredData.filter(function (item) {
+      return inputField.value === 'any' || item.offer[property].toString() === inputField.value;
+    });
     return filteredData;
   };
 
@@ -64,6 +62,8 @@
 
   filterField.addEventListener('input', function () {
     window.calc.debounce(updatePins);
+    filterField.removeEventListener('input', function () {
+    });
   });
 
   var downloadOffers = function (data) {
@@ -74,5 +74,4 @@
     updatePins: updatePins,
     downloadOffers: downloadOffers
   };
-
 })();
