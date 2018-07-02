@@ -11,7 +11,5 @@
     lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
   };
 
-  window.calc = {
-    debounce: debounce
-  };
+  window.debounce = debounce;
 })();
