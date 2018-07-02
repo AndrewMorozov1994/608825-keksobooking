@@ -9,7 +9,7 @@
   var map = document.querySelector('.map');
   var addressPointer = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
-  var mapPins = map.querySelector('.map__pins');
+  var filterField = document.querySelector('.map__filters');
 
   // Находим Инпуты в форме
   var titleAd = adForm.querySelector('#title');
@@ -43,8 +43,8 @@
 
   // Минимальная цена в зависимости от типа жилья
   var setPrice = function () {
-    price.min = window.card.TYPES[homesType.value].minPrice;
-    price.placeholder = window.card.TYPES[homesType.value].minPrice;
+    price.min = window.advert.TYPES[homesType.value].minPrice;
+    price.placeholder = window.advert.TYPES[homesType.value].minPrice;
   };
 
   homesType.addEventListener('change', setPrice);
@@ -108,19 +108,17 @@
   // Кнопка сброса
   var resetClickHandler = function () {
     adForm.reset();
+    filterField.reset();
 
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
 
-    var pins = mapPins.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var j = 0; j < pins.length; j++) {
-      mapPins.removeChild(pins[j]);
-    }
+    window.pins.removePins();
     addressPointer.style.left = INITIAL_ADDRESS_X + 'px';
     addressPointer.style.top = INITIAL_ADDRESS_Y + 'px';
 
     getCoordinations();
-    window.card.closeAdvert();
+    window.advert.closeAdvert();
     setPrice();
   };
 
@@ -137,9 +135,7 @@
       successSendForm.classList.remove('hidden');
 
       resetClickHandler();
-
     }, window.backend.error);
-
   });
 
   var closeSuccessEsc = function (evtClose) {
@@ -154,11 +150,9 @@
     document.removeEventListener('click', closeSuccess);
   };
 
-
   window.form = {
     getCoordinations: getCoordinations,
     setPrice: setPrice,
     setRoomsToGuests: setRoomsToGuests
   };
 })();
-

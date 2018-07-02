@@ -22,10 +22,10 @@
   var ESC_KEYCODE = 27;
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
-  var mapCardTemplate = document.querySelector('template').content.querySelector('.map__card');
+  var mapAdvertTemplate = document.querySelector('template').content.querySelector('.map__card');
 
   var createAdvert = function (advertParametr) {
-    var advert = mapCardTemplate.cloneNode(true);
+    var advert = mapAdvertTemplate.cloneNode(true);
     var featureHtml = '';
     var photosHtml = '';
 
@@ -60,11 +60,11 @@
 
   // Вставка DOM карточки
   var showAdvert = function (parent, advert) {
-    var mapCard = parent.querySelector('.map__card');
+    var mapAdvert = parent.querySelector('.map__card');
     if (parent.querySelector('.map__card')) {
       parent.replaceChild(createAdvert(advert), parent.querySelector('.map__card'));
     }
-    if (mapCard) {
+    if (mapAdvert) {
       closeAdvert();
     }
 
@@ -74,6 +74,9 @@
   // Функция закрытия карточки
   var closeAdvert = function () {
     var popup = map.querySelector('.map__card');
+    if (!popup) {
+      return;
+    }
     var popupClose = popup.querySelector('.popup__close');
 
     map.removeChild(popup);
@@ -89,10 +92,9 @@
     }
   };
 
-  window.card = {
+  window.advert = {
     showAdvert: showAdvert,
     closeAdvert: closeAdvert,
     TYPES: TYPES
   };
 })();
-

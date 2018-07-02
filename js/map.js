@@ -17,7 +17,7 @@
     });
 
     // Отрисовываем маркеры на карте
-    window.backend.download(window.pins.renderAllPins, window.backend.error);
+    window.filters.updatePins();
 
     // Передаем координаты в форму
     window.form.getCoordinations();
@@ -29,9 +29,8 @@
   };
 
   // Инициализация первого нажатия
-  var initPage = function () {
-    addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
-    addressPointer.addEventListener('keydown', pointerFirstClickHandler);
-  };
-  initPage();
+  addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
+  addressPointer.addEventListener('keydown', pointerFirstClickHandler);
+
+  window.backend.download(window.filters.loadOffers, window.backend.error);
 })();
