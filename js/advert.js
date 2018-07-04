@@ -19,7 +19,7 @@
       title: 'Дворец'
     }
   };
-  var ESC_KEYCODE = 27;
+
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var mapAdvertTemplate = document.querySelector('template').content.querySelector('.map__card');
@@ -67,7 +67,6 @@
     if (mapAdvert) {
       closeAdvert();
     }
-
     map.insertBefore(createAdvert(advert), mapFiltersContainer);
   };
 
@@ -87,9 +86,7 @@
 
   // Закрытие при нажатии на Escape
   var escPressHandler = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      closeAdvert();
-    }
+    window.support.closePopup(evt, closeAdvert);
   };
 
   window.advert = {

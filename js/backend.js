@@ -1,7 +1,6 @@
 'use strict';
 
 (function () {
-  var ESC_KEYCODE = 27;
   var URL_DOWNLOAD = 'https://js.dump.academy/keksobooking/data';
   var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
   var timeout = 30000;
@@ -65,9 +64,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
 
     var closeErrorEsc = function (evt) {
-      if (evt.keyCode === ESC_KEYCODE) {
-        closeError();
-      }
+      window.support.closePopup(evt, closeError);
     };
 
     var closeError = function () {
