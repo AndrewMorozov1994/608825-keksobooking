@@ -12,14 +12,14 @@
     lastTimeout = window.setTimeout(fun, DEBOUNCE_INTERVAL);
   };
 
-  var closePopup = function (evt, action) {
+  var closePopupHelper = function (evt, action) {
     if (evt.keyCode === ESC_KEYCODE) {
       action();
     }
   };
 
-  window.support = {
+  window.utils = {
     debounce: debounce,
-    closePopup: closePopup
+    closePopupHelper: closePopupHelper
   };
 })();

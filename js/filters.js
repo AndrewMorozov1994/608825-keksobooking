@@ -61,7 +61,7 @@
   };
 
   filterField.addEventListener('change', function () {
-    window.support.debounce(updatePins);
+    window.utils.debounce(updatePins);
     filterField.removeEventListener('input', function () {
     });
   });

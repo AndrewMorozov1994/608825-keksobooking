@@ -47,18 +47,7 @@
   var error = function (errorMessage) {
 
     var node = document.createElement('div');
-    node.style = 'z-index: 300; margin: 0 auto; background-color: red; color: white';
-    node.style.display = 'flex';
-    node.style.justifyContent = 'center';
-    node.style.alignItems = 'center';
-    node.style.position = 'fixed';
-    node.style.width = '400px';
-    node.style.minHeight = '200px';
-    node.style.border = '3px solid black';
-    node.style.borderRadius = '10px';
-    node.style.left = 'calc(50% - 200px)';
-    node.style.top = 'calc(50% - 100px)';
-    node.style.fontSize = '30px';
+    node.classList.add('error__popup');
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);

@@ -32,10 +32,9 @@
     var newPhoto = document.createElement('img');
 
     newContainer.classList.add('ad-form__photo');
+    newPhoto.classList.add('ad-form__image');
     newPhoto.alt = 'Фотография жилья';
     newPhoto.src = src;
-    newPhoto.style = 'width: 70px';
-    newContainer.style.overflow = 'hidden';
 
     newContainer.appendChild(newPhoto);
     photoContainer.appendChild(newContainer);

@@ -141,7 +141,7 @@
   });
 
   var closeSuccessEsc = function (evt) {
-    window.support.closePopup(evt, closeSuccess);
+    window.utils.closePopupHelper(evt, closeSuccess);
   };
 
   var closeSuccess = function () {

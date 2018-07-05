@@ -86,7 +86,7 @@
 
   // Закрытие при нажатии на Escape
   var escPressHandler = function (evt) {
-    window.support.closePopup(evt, closeAdvert);
+    window.utils.closePopupHelper(evt, closeAdvert);
   };
 
   window.advert = {
