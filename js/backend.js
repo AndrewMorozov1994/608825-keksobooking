@@ -53,7 +53,7 @@
     document.body.insertAdjacentElement('afterbegin', node);
 
     var closeErrorEsc = function (evt) {
-      window.support.closePopup(evt, closeError);
+      window.utils.closePopupHelper(evt, closeError);
     };
 
     var closeError = function () {
