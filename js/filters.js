@@ -60,8 +60,8 @@
     window.pins.renderAllPins(filteredData);
   };
 
-  filterField.addEventListener('input', function () {
-    window.debounce(updatePins);
+  filterField.addEventListener('change', function () {
+    window.utils.debounce(updatePins);
     filterField.removeEventListener('input', function () {
     });
   });

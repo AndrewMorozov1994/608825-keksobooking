@@ -4,7 +4,6 @@
   // Исходные координаты ползунка
   var INITIAL_ADDRESS_X = 537;
   var INITIAL_ADDRESS_Y = 375;
-  var ESC_KEYCODE = 27;
 
   var map = document.querySelector('.map');
   var addressPointer = map.querySelector('.map__pin--main');
@@ -120,6 +119,9 @@
     getCoordinations();
     window.advert.closeAdvert();
     setPrice();
+
+    window.previewPhotos.resetAvatarLoad();
+    window.previewPhotos.resetPhotoContainer();
   };
 
   resetButton.addEventListener('click', resetClickHandler);
@@ -138,10 +140,8 @@
     }, window.backend.error);
   });
 
-  var closeSuccessEsc = function (evtClose) {
-    if (evtClose.keyCode === ESC_KEYCODE) {
-      closeSuccess();
-    }
+  var closeSuccessEsc = function (evt) {
+    window.utils.closePopupHelper(evt, closeSuccess);
   };
 
   var closeSuccess = function () {
