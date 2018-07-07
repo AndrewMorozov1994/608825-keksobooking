@@ -44,7 +44,7 @@
     xhr.send();
   };
 
-  var error = function (errorMessage) {
+  var createErrorPopup = function (errorMessage) {
 
     var node = document.createElement('div');
     node.classList.add('error__popup');
@@ -52,23 +52,23 @@
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
 
-    var closeErrorEsc = function (evt) {
+    var escPressHandler = function (evt) {
       window.utils.closePopupHelper(evt, closeError);
     };
 
     var closeError = function () {
       document.body.removeChild(node);
-      document.removeEventListener('keydown', closeErrorEsc);
+      document.removeEventListener('keydown', escPressHandler);
       document.removeEventListener('click', closeError);
     };
 
-    document.addEventListener('keydown', closeErrorEsc);
+    document.addEventListener('keydown', escPressHandler);
     document.addEventListener('click', closeError);
   };
 
   window.backend = {
     upload: upload,
     download: download,
-    error: error
+    createErrorPopup: createErrorPopup
   };
 })();

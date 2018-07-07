@@ -9,6 +9,7 @@
   var addressPointer = map.querySelector('.map__pin--main');
   var adForm = document.querySelector('.ad-form');
   var filterField = document.querySelector('.map__filters');
+  var adFormFieldsets = adForm.querySelectorAll('fieldset');
 
   // Находим Инпуты в форме
   var titleAd = adForm.querySelector('#title');
@@ -47,6 +48,13 @@
   };
 
   homesType.addEventListener('change', setPrice);
+
+  var toggleFieldsetDisabled = function (isDisabled) {
+    for (var j = 1; j < adFormFieldsets.length; j++) {
+      adFormFieldsets[j].disabled = isDisabled;
+    }
+  };
+  toggleFieldsetDisabled(true);
 
   // Валидация цены
   var setPriceInvalid = function () {
@@ -119,6 +127,7 @@
     getCoordinations();
     window.advert.closeAdvert();
     setPrice();
+    toggleFieldsetDisabled(true);
 
     window.previewPhotos.resetAvatarLoad();
     window.previewPhotos.resetPhotoContainer();
@@ -130,29 +139,30 @@
   adForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
 
-    document.addEventListener('keydown', closeSuccessEsc);
+    document.addEventListener('keydown', escPressHandler);
     document.addEventListener('click', closeSuccess);
 
     window.backend.upload(new FormData(adForm), function () {
       successSendForm.classList.remove('hidden');
 
       resetClickHandler();
-    }, window.backend.error);
+    }, window.backend.createErrorPopup);
   });
 
-  var closeSuccessEsc = function (evt) {
+  var escPressHandler = function (evt) {
     window.utils.closePopupHelper(evt, closeSuccess);
   };
 
   var closeSuccess = function () {
     successSendForm.classList.add('hidden');
-    document.removeEventListener('keydown', closeSuccessEsc);
+    document.removeEventListener('keydown', escPressHandler);
     document.removeEventListener('click', closeSuccess);
   };
 
   window.form = {
     getCoordinations: getCoordinations,
     setPrice: setPrice,
-    setRoomsToGuests: setRoomsToGuests
+    setRoomsToGuests: setRoomsToGuests,
+    toggleFieldsetDisabled: toggleFieldsetDisabled
   };
 })();
