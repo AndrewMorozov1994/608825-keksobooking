@@ -106,7 +106,7 @@
 
   // Получаем координаты ползунка
   var getCoordinations = function () {
-    var left = addressPointer.offsetLeft - Math.round(addressPointer.offsetWidth / 2);
+    var left = addressPointer.offsetLeft + Math.round(addressPointer.offsetWidth / 2);
     var top = addressPointer.offsetTop;
 
     adressInput.value = left + ', ' + top;

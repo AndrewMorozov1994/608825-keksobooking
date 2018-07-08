@@ -53,7 +53,7 @@
       addressPointer.style.top = newY + 'px';
 
       var locationX = newX + Math.round(addressPointer.offsetWidth / 2);
-      var locationY = newY + addressPointer.offsetHeight;
+      var locationY = newY;
 
       adressInput.value = locationX + ', ' + locationY;
     };
