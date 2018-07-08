@@ -34,12 +34,12 @@
       var newX = addressPointer.offsetLeft + shift.x;
       var newY = addressPointer.offsetTop + shift.y;
 
-      if (newX < 0) {
-        newX = 0;
+      if (newX < 0 - addressPointer.offsetWidth / 2) { // Удаляем addressPointer чтобы пин не вылезал за границу
+        newX = 0 - Math.round(addressPointer.offsetWidth / 2);
       }
 
-      if (newX > addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth) {
-        newX = addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth;
+      if (newX > addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth / 2) { // Удаляем /2 чтобы пин не вылезал за границу
+        newX = addressPointer.parentElement.offsetWidth - Math.round(addressPointer.offsetWidth / 2);
       }
 
       if (newY < ADDRESS_Y_MIN) {

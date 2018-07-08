@@ -140,7 +140,7 @@
     evt.preventDefault();
 
     document.addEventListener('keydown', escPressHandler);
-    document.addEventListener('click', closeSuccess);
+    document.addEventListener('click', successCloseHandler);
 
     window.backend.upload(new FormData(adForm), function () {
       successSendForm.classList.remove('hidden');
@@ -150,13 +150,13 @@
   });
 
   var escPressHandler = function (evt) {
-    window.utils.closePopupHelper(evt, closeSuccess);
+    window.utils.closePopupHelper(evt, successCloseHandler);
   };
 
-  var closeSuccess = function () {
+  var successCloseHandler = function () {
     successSendForm.classList.add('hidden');
     document.removeEventListener('keydown', escPressHandler);
-    document.removeEventListener('click', closeSuccess);
+    document.removeEventListener('click', successCloseHandler);
   };
 
   window.form = {

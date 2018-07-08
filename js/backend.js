@@ -53,17 +53,17 @@
     document.body.insertAdjacentElement('afterbegin', node);
 
     var escPressHandler = function (evt) {
-      window.utils.closePopupHelper(evt, closeError);
+      window.utils.closePopupHelper(evt, errorCloseHandler);
     };
 
-    var closeError = function () {
+    var errorCloseHandler = function () {
       document.body.removeChild(node);
       document.removeEventListener('keydown', escPressHandler);
-      document.removeEventListener('click', closeError);
+      document.removeEventListener('click', errorCloseHandler);
     };
 
     document.addEventListener('keydown', escPressHandler);
-    document.addEventListener('click', closeError);
+    document.addEventListener('click', errorCloseHandler);
   };
 
   window.backend = {
