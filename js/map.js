@@ -3,7 +3,6 @@
 (function () {
   var map = document.querySelector('.map');
   var adForm = document.querySelector('.ad-form');
-  var adFieldsets = adForm.querySelectorAll('fieldset');
   var addressPointer = map.querySelector('.map__pin--main');
 
   // Функция изменения состояния при первом нажатии
@@ -12,9 +11,7 @@
 
     // Активация формы
     adForm.classList.remove('ad-form--disabled');
-    adFieldsets.forEach(function (item) { // Наткнулся в учебнике на данный метод, решил опробовать
-      item.disabled = false;
-    });
+    window.form.toggleFieldsetDisabled(false);
 
     // Отрисовываем маркеры на карте
     window.filters.updatePins();
@@ -29,8 +26,8 @@
   };
 
   // Инициализация первого нажатия
-  addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
+  addressPointer.addEventListener('mousedown', pointerFirstClickHandler);
   addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 
-  window.backend.download(window.filters.loadOffers, window.backend.error);
+  window.backend.download(window.filters.loadOffers, window.backend.createErrorPopup);
 })();

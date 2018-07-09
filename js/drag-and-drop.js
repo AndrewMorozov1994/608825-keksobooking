@@ -18,7 +18,7 @@
       y: evt.clientY
     };
 
-    var onMouseMove = function (moveEvt) {
+    var mouseMoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
 
       var shift = {
@@ -34,12 +34,12 @@
       var newX = addressPointer.offsetLeft + shift.x;
       var newY = addressPointer.offsetTop + shift.y;
 
-      if (newX < 0) {
-        newX = 0;
+      if (newX < 0 - addressPointer.offsetWidth / 2) { // Удаляем addressPointer чтобы пин не вылезал за границу
+        newX = 0 - Math.round(addressPointer.offsetWidth / 2);
       }
 
-      if (newX > addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth) {
-        newX = addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth;
+      if (newX > addressPointer.parentElement.offsetWidth - addressPointer.offsetWidth / 2) { // Удаляем /2 чтобы пин не вылезал за границу
+        newX = addressPointer.parentElement.offsetWidth - Math.round(addressPointer.offsetWidth / 2);
       }
 
       if (newY < ADDRESS_Y_MIN) {
@@ -53,19 +53,19 @@
       addressPointer.style.top = newY + 'px';
 
       var locationX = newX + Math.round(addressPointer.offsetWidth / 2);
-      var locationY = newY + addressPointer.offsetHeight;
+      var locationY = newY;
 
       adressInput.value = locationX + ', ' + locationY;
     };
 
-    var onMouseUp = function (upEvt) {
+    var mouseUpHandler = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
   });
 })();
