@@ -26,7 +26,7 @@
   };
 
   // Инициализация первого нажатия
-  addressPointer.addEventListener('mouseup', pointerFirstClickHandler);
+  addressPointer.addEventListener('mousedown', pointerFirstClickHandler);
   addressPointer.addEventListener('keydown', pointerFirstClickHandler);
 
   window.backend.download(window.filters.loadOffers, window.backend.createErrorPopup);
