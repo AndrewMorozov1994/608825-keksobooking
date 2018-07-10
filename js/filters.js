@@ -49,7 +49,7 @@
   var updatePins = function () {
     filteredData = pin;
     window.pins.removePins();
-    window.advert.closeAdvert();
+    window.advert.advertCloseHandler();
 
     filterValue(houseFilter, 'type');
     filterValue(roomsFilter, 'rooms');

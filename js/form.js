@@ -2,7 +2,7 @@
 
 (function () {
   // Исходные координаты ползунка
-  var INITIAL_ADDRESS_X = 537;
+  var INITIAL_ADDRESS_X = 570;
   var INITIAL_ADDRESS_Y = 375;
 
   var map = document.querySelector('.map');
@@ -24,7 +24,7 @@
   var successSendForm = document.querySelector('.success');
 
   // Валидация заголовка
-  var setTitleInvalid = function () {
+  var titleSetHandler = function () {
     if (titleAd.validity.tooShort) {
       titleAd.setCustomValidity('Минимальное число символов: ' + titleAd.minLength);
     } else if (titleAd.validity.tooLong) {
@@ -36,18 +36,18 @@
     }
   };
 
-  titleAd.addEventListener('invalid', setTitleInvalid);
+  titleAd.addEventListener('invalid', titleSetHandler);
   titleAd.addEventListener('change', function (evt) {
     evt.target.checkValidity();
   });
 
   // Минимальная цена в зависимости от типа жилья
-  var setPrice = function () {
+  var minPriceSetHandler = function () {
     price.min = window.advert.TYPES[homesType.value].minPrice;
     price.placeholder = window.advert.TYPES[homesType.value].minPrice;
   };
 
-  homesType.addEventListener('change', setPrice);
+  homesType.addEventListener('change', minPriceSetHandler);
 
   var toggleFieldsetDisabled = function (isDisabled) {
     for (var j = 1; j < adFormFieldsets.length; j++) {
@@ -57,7 +57,7 @@
   toggleFieldsetDisabled(true);
 
   // Валидация цены
-  var setPriceInvalid = function () {
+  var priceSetHandler = function () {
     if (price.validity.rangeUnderflow) {
       price.setCustomValidity('Минимальная цена: ' + price.min);
     } else if (price.validity.rangeOverflow) {
@@ -69,7 +69,7 @@
     }
   };
 
-  price.addEventListener('invalid', setPriceInvalid);
+  price.addEventListener('invalid', priceSetHandler);
   price.addEventListener('change', function (evt) {
     evt.target.checkValidity();
   });
@@ -84,7 +84,7 @@
   });
 
   // Синхронизация количества гостей и количества комнат
-  var setRoomsToGuests = function () {
+  var capacitySetHandler = function () {
     if (+roomNumber.value < roomNumber.length) {
       capacity.value = roomNumber.value;
     } else {
@@ -94,7 +94,6 @@
     for (var i = 0; i < capacity.length; i++) {
       var option = capacity.options[i];
       var notForGuests = +option.value === 0;
-
       if (+roomNumber.value === 100) {
         option.disabled = !notForGuests;
       } else {
@@ -102,7 +101,7 @@
       }
     }
   };
-  roomNumber.addEventListener('change', setRoomsToGuests);
+  roomNumber.addEventListener('change', capacitySetHandler);
 
   // Получаем координаты ползунка
   var getCoordinations = function () {
@@ -125,8 +124,8 @@
     addressPointer.style.top = INITIAL_ADDRESS_Y + 'px';
 
     getCoordinations();
-    window.advert.closeAdvert();
-    setPrice();
+    window.advert.advertCloseHandler();
+    minPriceSetHandler();
     toggleFieldsetDisabled(true);
 
     window.previewPhotos.resetAvatarLoad();
@@ -161,8 +160,8 @@
 
   window.form = {
     getCoordinations: getCoordinations,
-    setPrice: setPrice,
-    setRoomsToGuests: setRoomsToGuests,
+    minPriceSetHandler: minPriceSetHandler,
+    capacitySetHandler: capacitySetHandler,
     toggleFieldsetDisabled: toggleFieldsetDisabled
   };
 })();

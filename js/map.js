@@ -20,9 +20,9 @@
     window.form.getCoordinations();
 
     // Устанавливаем соответствие цены в зависимости от типа жилья
-    window.form.setPrice();
+    window.form.minPriceSetHandler();
 
-    window.form.setRoomsToGuests();
+    window.form.capacitySetHandler();
   };
 
   // Инициализация первого нажатия

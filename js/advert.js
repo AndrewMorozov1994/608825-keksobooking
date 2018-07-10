@@ -52,7 +52,7 @@
 
     // Закрытие карточки
     var popupClose = advert.querySelector('.popup__close');
-    popupClose.addEventListener('click', closeAdvert);
+    popupClose.addEventListener('click', advertCloseHandler);
     document.addEventListener('keydown', escPressHandler);
 
     return advert;
@@ -65,13 +65,13 @@
       parent.replaceChild(createAdvert(advert), parent.querySelector('.map__card'));
     }
     if (mapAdvert) {
-      closeAdvert();
+      advertCloseHandler();
     }
     map.insertBefore(createAdvert(advert), mapFiltersContainer);
   };
 
   // Функция закрытия карточки
-  var closeAdvert = function () {
+  var advertCloseHandler = function () {
     var popup = map.querySelector('.map__card');
     if (!popup) {
       return;
@@ -80,18 +80,18 @@
 
     map.removeChild(popup);
     document.removeEventListener('keydown', escPressHandler);
-    popupClose.removeEventListener('click', closeAdvert);
-    popupClose.removeEventListener('keydown', closeAdvert);
+    popupClose.removeEventListener('click', advertCloseHandler);
+    popupClose.removeEventListener('keydown', advertCloseHandler);
   };
 
   // Закрытие при нажатии на Escape
   var escPressHandler = function (evt) {
-    window.utils.closePopupHelper(evt, closeAdvert);
+    window.utils.closePopupHelper(evt, advertCloseHandler);
   };
 
   window.advert = {
     showAdvert: showAdvert,
-    closeAdvert: closeAdvert,
+    advertCloseHandler: advertCloseHandler,
     TYPES: TYPES
   };
 })();
